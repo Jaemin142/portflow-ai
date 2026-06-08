@@ -985,17 +985,16 @@ with k4:
 # =========================================================
 # 10. 탭 구성
 # =========================================================
-tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs([
-    "데이터 개요",
+tab2, tab3, tab5, tab7, tab1, tab4, tab6, tab8 = st.tabs([
     "수출입 추이",
     "AI 수요예측",
-    "국가·품목 비교",
     "리스크 분석",
-    "What-if 시뮬레이션",
     "TOP 리스크 랭킹",
+    "데이터 개요",
+    "국가·품목 비교",
+    "What-if 시뮬레이션",
     "확장 설계"
 ])
-
 
 # =========================================================
 # 탭 1. 데이터 개요
@@ -1020,8 +1019,6 @@ with tab1:
     # -----------------------------------------------------
     # 전체 데이터 현황
     # -----------------------------------------------------
-    st.write("### 전체 데이터 현황")
-
     total_rows = len(df)
     total_countries = df["query_country_name"].nunique()
     total_hs = df["query_hs_name"].nunique()
@@ -1032,18 +1029,23 @@ with tab1:
     total_import_value = df["impDlr"].sum()
     total_balance_value = df["balPayments"].sum()
 
-    d1, d2, d3, d4 = st.columns(4)
+    with st.expander("전체 데이터 현황 보기", expanded=False):
+        st.caption(
+            "현재 서비스가 분석에 활용하는 관세청 수출입 데이터의 전체 범위입니다."
+        )
 
-    d1.metric("전체 데이터 행 수", f"{total_rows:,}건")
-    d2.metric("분석 국가 수", f"{total_countries:,}개")
-    d3.metric("분석 품목군 수", f"{total_hs:,}개")
-    d4.metric("분석 기간", f"{full_start_period} ~ {full_end_period}")
+        d1, d2, d3, d4 = st.columns(4)
 
-    d5, d6, d7 = st.columns(3)
+        d1.metric("전체 데이터 행 수", f"{total_rows:,}건")
+        d2.metric("분석 국가 수", f"{total_countries:,}개")
+        d3.metric("분석 품목군 수", f"{total_hs:,}개")
+        d4.metric("분석 기간", f"{full_start_period} ~ {full_end_period}")
 
-    d5.metric("전체 수출금액", format_usd_short(total_export_value))
-    d6.metric("전체 수입금액", format_usd_short(total_import_value))
-    d7.metric("전체 무역수지", format_usd_short(total_balance_value))
+        d5, d6, d7 = st.columns(3)
+
+        d5.metric("전체 수출금액", format_usd_short(total_export_value))
+        d6.metric("전체 수입금액", format_usd_short(total_import_value))
+        d7.metric("전체 무역수지", format_usd_short(total_balance_value))
 
     st.divider()
 
